@@ -7,7 +7,7 @@ Copyrights:  (C) 2012 Dave Parfitt
 License:     Apache-2.0
 Plugins:     META (0.3), DevFiles (0.3)
 BuildTools: ocamlbuild
-PreBuildCommand: make -C piqi.make
+PreBuildCommand: make -f piqi.make
 
 Library riemann
   Path:         src
