@@ -13,6 +13,6 @@ Library riemann
   Path:         src
   FindlibName:  riemann
   BuildTools:   ocamlbuild
-  Modules:      Riemann
+  Modules:      Riemann, Riemann_piqi
   BuildDepends: unix, piqi.runtime, oUnit
   Install:      false
