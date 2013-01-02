@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: faa1d52bf7111169a4c2140c2c3254a5)
+version = "0.1"
+description = "An OCaml client for Riemann"
+requires = "unix piqi.runtime oUnit"
+archive(byte) = "riemann.cma"
+archive(byte, plugin) = "riemann.cma"
+archive(native) = "riemann.cmxa"
+archive(native, plugin) = "riemann.cmxs"
+exists_if = "riemann.cma"
+# OASIS_STOP
+

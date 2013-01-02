@@ -1,0 +1,18 @@
+OASISFormat: 0.3
+Name:        riemann-ocaml-client
+Version:     0.1
+Synopsis:    An OCaml client for Riemann
+Authors:     Dave Parfitt (diparfitt@gmail.com)
+Copyrights:  (C) 2012 Dave Parfitt
+License:     Apache-2.0
+Plugins:     META (0.3), DevFiles (0.3)
+BuildTools: ocamlbuild
+PreBuildCommand: make -C piqi.make
+
+Library riemann
+  Path:         src
+  FindlibName:  riemann
+  BuildTools:   ocamlbuild
+  Modules:      Riemann
+  BuildDepends: unix, piqi.runtime, oUnit
+  Install:      false
