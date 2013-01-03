@@ -1,6 +1,8 @@
 open Sys
 open Unix
 
+exception RiemannException of string * int
+
 type riemann_connection = {
   host : string;
   port : int;
@@ -52,4 +54,23 @@ let riemann_connect_with_defaults hostname port =
 
 let riemann_disconnect conn =
   close conn.sock
+
+let send_msg (conn:riemann_connection) (req:Piqirun.OBuf.t) =
+  let reqlen = Piqirun.OBuf.size req + 1 in
+  output_binary_int conn.outc reqlen;
+  Piqirun.to_channel conn.outc req;
+  flush conn.outc
+
+let recv_msg (conn:riemann_connection) =
+  let resplength = input_binary_int conn.inc in
+    match resplength with
+      | 0 -> raise (RiemannException ("Unknown response from server",-1))
+      | _ ->
+          let buf = String.create (resplength-1) in
+            really_input conn.inc buf 0 (resplength-1);
+            Piqirun.init_from_string(buf)
+
+let send_pb_message (conn:riemann_connection) (req:Piqirun.OBuf.t) =
+  send_msg conn req;
+  recv_msg conn
 
