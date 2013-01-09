@@ -1,5 +1,6 @@
 open Sys
 open Unix
+open Riemann_piqi
 
 exception RiemannException of string * int
 
@@ -28,6 +29,8 @@ let set_nagle fd newval =
   try Unix.setsockopt fd Unix.TCP_NODELAY newval
   with Unix.Unix_error (e, _, _) ->
     print_endline ("Error setting TCP_NODELAY" ^ (Unix.error_message e))
+
+
 
 let riemann_connect options hostname portnum =
    let server_addr =
@@ -70,7 +73,40 @@ let recv_msg (conn:riemann_connection) =
             really_input conn.inc buf 0 (resplength-1);
             Piqirun.init_from_string(buf)
 
-let send_pb_message (conn:riemann_connection) (req:Piqirun.OBuf.t) =
-  send_msg conn req;
-  recv_msg conn
+(* split out the socket creation code *)
+let riemann_udp hostname portnum (msg:Piqirun.OBuf.t)=
+  let portaddr = Unix.ADDR_INET (Unix.inet_addr_of_string hostname, portnum) in
+  let s = socket Unix.PF_INET Unix.SOCK_DGRAM 0 in
+  let rawmsg = (Piqirun.OBuf.to_string(msg)) in
+    sendto s rawmsg (String.length rawmsg) 0 [] portaddr
 
+(* just for testing *)
+let new_riemann_event name =
+  {
+    Event.time = None;
+    Event.state = Some "Foobar";
+    Event.service = Some name;
+    Event.host = Some "Host!";
+    Event.description = Some "Foo";
+    Event.tags = ["X"; "Y"; "Z"];
+    Event.ttl = None;
+    Event.metric_sint64 = None;
+    Event.metric_d = None;
+    Event.metric_f = None;
+  }
+
+
+let rec testit n =
+  match n with
+    | 0 -> print_endline "Done!"
+    | n ->
+        print_endline (string_of_int(n));
+        let teststate = new_riemann_event "Foo" in
+        let genreq = gen_event teststate in
+          riemann_udp "127.0.0.1" 5555 genreq;
+            testit (n-1)
+
+    (* testing a simple Riemann event send over tcp *)
+let _ =
+  testit 1000;
+  print_endline "Done!"

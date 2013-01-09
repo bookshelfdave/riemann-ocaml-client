@@ -9,10 +9,9 @@ Plugins:     META (0.3), DevFiles (0.3)
 BuildTools: ocamlbuild
 PreBuildCommand: make -f piqi.make
 
-Library riemann
+Executable riemann
   Path:         src
-  FindlibName:  riemann
+  MainIS:       riemann.ml
   BuildTools:   ocamlbuild
-  Modules:      Riemann, Riemann_piqi
   BuildDepends: unix, piqi.runtime, oUnit
   Install:      false
