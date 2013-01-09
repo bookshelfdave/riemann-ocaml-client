@@ -22,6 +22,8 @@ riemann.mli: Riemann OCaml Client
 -------------------------------------------------------------------
 *)
 
+(* scroll to the bottom for relevant functions *)
+
 exception RiemannException of string * int
 
 type riemann_connection = {
@@ -62,6 +64,7 @@ type riemann_state =
   | State_tags of string list
   | State_ttl of float
 
+(* internal function *)
 val new_riemann_state : unit -> Riemann_piqi.State.t
 
 val new_riemann_event : unit -> Riemann_piqi.Event.t
@@ -85,9 +88,7 @@ val process_state :
 val set_nagle : Unix.file_descr -> bool -> unit
 
 
-
-
-
+(* public functions - these are the ones you want to use *)
 val riemann_connect :
   riemann_connection_options -> string -> int -> riemann_connection
 
