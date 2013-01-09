@@ -3,13 +3,16 @@ riemann-ocaml-client
 
 © 2013 Dave Parfitt
 
-riemann-ocaml-client is a Riemann client for OCaml 3.12.1. 
+riemann-ocaml-client is a Riemann client for OCaml 3.12.1.
+
+** This code is currently untested, use at your own risk! **
 
 ## TODO
 
 - testing
 - documentation
 - minor code cleanup
+- OPAM module
 
 ##Dependencies
 
