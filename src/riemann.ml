@@ -1,3 +1,27 @@
+(*
+-------------------------------------------------------------------
+
+riemann.ml: Riemann OCaml Client
+
+ Copyright (c) 2013 Dave Parfitt
+ All Rights Reserved.
+
+ This file is provided to you under the Apache License,
+ Version 2.0 (the "License"); you may not use this file
+ except in compliance with the License.  You may obtain
+ a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the Licese is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-------------------------------------------------------------------
+*)
+
 open Sys
 open Unix
 open Riemann_piqi
@@ -230,15 +254,17 @@ let riemann_state opts =
 let riemann_query = new_riemann_query_msg
 
 
+(* demo usage, not a substitute for tests though *)
 let _ =
   let udp_socket = riemann_udp_socket "127.0.0.1" 5555 in
-  let event = riemann_event [
-    Event_host "www1";
-    Event_service "test";
-    Event_metric_f 2.53;
-    Event_state "critical";
-    Event_description  "Request took 2.53 seconds";
-    Event_tags  ["http"] ] in
+  let event =
+    riemann_event [
+      Event_host "www1";
+      Event_service "test";
+      Event_metric_f 2.53;
+      Event_state "critical";
+      Event_description  "Request took 2.53 seconds";
+      Event_tags  ["http"] ] in
   let event_msg = new_riemann_events_msg [event] in
   let _ = send_msg_udp udp_socket event_msg in
     sleep(1);
