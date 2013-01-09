@@ -36,11 +36,11 @@ make install
 
 In the meantime, checkout the interface:
 
-- [https://github.com/metadave/riemann-ocaml-client/blob/master/src/riemann.mli](riemann.mli)
+- src/riemann.mli
 
 Until I write some tests (shame on me), there's some crappy code at the bottom of this file that can serve as an example:
 
-- [https://github.com/metadave/riemann-ocaml-client/blob/master/src/riemann.ml](riemann.ml)
+- src/riemann.ml
 
 
 ## License & Copyright
