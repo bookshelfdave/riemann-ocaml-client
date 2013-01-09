@@ -240,7 +240,7 @@ let _ =
     Event_description  "Request took 2.53 seconds";
     Event_tags  ["http"] ] in
   let event_msg = new_riemann_events_msg [event] in
-    send_msg_udp udp_socket event_msg;
+  let _ = send_msg_udp udp_socket event_msg in
     sleep(1);
     let msg = new_riemann_query_msg "tagged \"http\"" in
     let conn = riemann_connect_with_defaults "127.0.0.1" 5555 in
