@@ -255,6 +255,7 @@ let riemann_query = new_riemann_query_msg
 
 
 (* demo usage, not a substitute for tests though *)
+(*
 let _ =
   let udp_socket = riemann_udp_socket "127.0.0.1" 5555 in
   let event =
@@ -277,3 +278,4 @@ let _ =
               print_endline(string_of_int(List.length(resp.Msg.events)));
               print_endline(string_of_int(List.length(resp.Msg.states)))
           | None -> print_endline ":-("
+ *)

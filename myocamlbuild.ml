@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 7f1fe35ca701714cd7fdec23f0deaa3e) *)
+(* DO NOT EDIT (digest: 0eeeeb97a2b1a769fd5953f5fcfc95d2) *)
 module OASISGettext = struct
 (* # 21 "/Users/dparfitt/.opam/3.12.1+natdynlink-osx/build/oasis.0.3.0/src/oasis/OASISGettext.ml" *)
 
@@ -476,11 +476,16 @@ end
 # 476 "myocamlbuild.ml"
 open Ocamlbuild_plugin;;
 let package_default =
-  {MyOCamlbuildBase.lib_ocaml = []; lib_c = []; flags = []; includes = []; }
+  {
+     MyOCamlbuildBase.lib_ocaml = [("riemann", ["src"])];
+     lib_c = [];
+     flags = [];
+     includes = [];
+     }
   ;;
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 485 "myocamlbuild.ml"
+# 490 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;
