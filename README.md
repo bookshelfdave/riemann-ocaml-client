@@ -98,7 +98,7 @@ val riemann_state : riemann_state list -> Riemann_piqi.State.t
 val riemann_query : string -> Riemann_piqi.Msg.t
 ```
 
-### Generating Protobuffs Messages
+### Generating Protobuffs Messages w/ Events, States and Queries
 
 ```
 val new_riemann_events_msg :
