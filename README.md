@@ -27,7 +27,7 @@ make
 make install
 ```
 
-## Documentation?
+## Documentation
 
 ***work in progress***
 
@@ -39,30 +39,6 @@ Until I write some tests (shame on me), there's some crappy code at the bottom o
 
 - src/riemann.ml
 
-
-```
-type riemann_event =
-    Event_time of int64
-  | Event_state of string
-  | Event_service of string
-  | Event_host of string
-  | Event_description of string
-  | Event_tags of string list
-  | Event_ttl of float
-  | Event_metric_sint64 of int64
-  | Event_metric_f of float
-  | Event_metric_d of float
-
-type riemann_state =
-    State_time of int64
-  | State_state of string
-  | State_service of string
-  | State_host of string
-  | State_description of string
-  | State_once of bool
-  | State_tags of string list
-  | State_ttl of float
-```
 
 ### TCP Connections
 
@@ -88,13 +64,44 @@ val riemann_udp_socket : string -> int -> Unix.file_descr * Unix.sockaddr
 ```
 
 
-### Generating Events, States and Queries
+### Generating Events
 
 ```
+type riemann_event =
+    Event_time of int64
+  | Event_state of string
+  | Event_service of string
+  | Event_host of string
+  | Event_description of string
+  | Event_tags of string list
+  | Event_ttl of float
+  | Event_metric_sint64 of int64
+  | Event_metric_f of float
+  | Event_metric_d of float
+
 val riemann_event : riemann_event list -> Riemann_piqi.Event.t
+```
+
+### Generating States
+
+```
+type riemann_state =
+    State_time of int64
+  | State_state of string
+  | State_service of string
+  | State_host of string
+  | State_description of string
+  | State_once of bool
+  | State_tags of string list
+  | State_ttl of float
+
 
 val riemann_state : riemann_state list -> Riemann_piqi.State.t
+```
 
+### Generating Queries
+
+```
 val riemann_query : string -> Riemann_piqi.Msg.t
 ```
 
@@ -109,6 +116,10 @@ val new_riemann_states_msg :
 
 val new_riemann_query_msg : string -> Riemann_piqi.Msg.t
 ```
+
+## Examples
+
+TODO
 
 ## License & Copyright
 
