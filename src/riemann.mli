@@ -96,9 +96,9 @@ val riemann_connect_with_defaults : string -> int -> riemann_connection
 
 val riemann_disconnect : riemann_connection -> unit
 
-val send_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t -> unit
+val send_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t -> Riemann_piqi.Msg.t
 
-val recv_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t
+(*val recv_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t*)
 
 val send_msg_udp :
   Unix.file_descr * Unix.sockaddr -> Riemann_piqi.Msg.t -> int

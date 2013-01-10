@@ -221,19 +221,17 @@ let riemann_disconnect conn =
 let send_msg_tcp (conn:riemann_connection) msg =
   let req = gen_msg msg in
   let reqlen = Piqirun.OBuf.size req in
-  (* big-endian *)
-  output_binary_int conn.outc reqlen;
-  Piqirun.to_channel conn.outc req;
-  flush conn.outc
-
-let recv_msg_tcp (conn:riemann_connection) =
-  let resplength = input_binary_int conn.inc in
-    match resplength with
-      | 0 -> raise (RiemannException ("Unknown response from server",-1))
-      | _ ->
-          let buf = String.create (resplength) in
-            really_input conn.inc buf 0 (resplength);
-            parse_msg (Piqirun.init_from_string(buf))
+    (* big-endian *)
+    output_binary_int conn.outc reqlen;
+    Piqirun.to_channel conn.outc req;
+    flush conn.outc;
+    let resplength = input_binary_int conn.inc in
+      match resplength with
+        | 0 -> raise (RiemannException ("Unknown response from server",-1))
+        | _ ->
+            let buf = String.create (resplength) in
+              really_input conn.inc buf 0 (resplength);
+              parse_msg (Piqirun.init_from_string(buf))
 
 let send_msg_udp (s, portaddr) msg =
   let req = gen_msg msg in
