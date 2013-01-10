@@ -5,14 +5,11 @@ riemann-ocaml-client
 
 riemann-ocaml-client is a Riemann client for OCaml 3.12.1.
 
-** This code is currently untested, use at your own risk! **
-
 ## TODO
 
-- testing
 - documentation
 - minor code cleanup
-- OPAM module
+- OPAM module once Piqi is released in OPAM
 
 ##Dependencies
 
@@ -32,7 +29,7 @@ make install
 
 ## Documentation?
 
-- TODO
+***work in progress***
 
 In the meantime, checkout the interface:
 
@@ -42,6 +39,76 @@ Until I write some tests (shame on me), there's some crappy code at the bottom o
 
 - src/riemann.ml
 
+
+```
+type riemann_event =
+    Event_time of int64
+  | Event_state of string
+  | Event_service of string
+  | Event_host of string
+  | Event_description of string
+  | Event_tags of string list
+  | Event_ttl of float
+  | Event_metric_sint64 of int64
+  | Event_metric_f of float
+  | Event_metric_d of float
+
+type riemann_state =
+    State_time of int64
+  | State_state of string
+  | State_service of string
+  | State_host of string
+  | State_description of string
+  | State_once of bool
+  | State_tags of string list
+  | State_ttl of float
+```
+
+### TCP Connections
+
+```
+val riemann_connect :
+  riemann_connection_options -> string -> int -> riemann_connection
+
+val riemann_connect_with_defaults : string -> int -> riemann_connection
+
+val riemann_disconnect : riemann_connection -> unit
+
+val send_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t -> Riemann_piqi.Msg.t
+```
+
+
+### UDP Sockets
+
+```
+val send_msg_udp :
+  Unix.file_descr * Unix.sockaddr -> Riemann_piqi.Msg.t -> int
+
+val riemann_udp_socket : string -> int -> Unix.file_descr * Unix.sockaddr
+```
+
+
+### Generating Events, States and Queries
+
+```
+val riemann_event : riemann_event list -> Riemann_piqi.Event.t
+
+val riemann_state : riemann_state list -> Riemann_piqi.State.t
+
+val riemann_query : string -> Riemann_piqi.Msg.t
+```
+
+### Generating Protobuffs Messages
+
+```
+val new_riemann_events_msg :
+  Riemann_piqi.Riemann_piqi.event list -> Riemann_piqi.Msg.t
+
+val new_riemann_states_msg :
+  Riemann_piqi.Riemann_piqi.state list -> Riemann_piqi.Msg.t
+
+val new_riemann_query_msg : string -> Riemann_piqi.Msg.t
+```
 
 ## License & Copyright
 
