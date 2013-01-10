@@ -7,7 +7,7 @@ riemann-ocaml-client is a Riemann client for OCaml 3.12.1.
 
 ## TODO
 
-- documentation
+- finish documentation
 - minor code cleanup
 - OPAM module once Piqi is released in OPAM
 
