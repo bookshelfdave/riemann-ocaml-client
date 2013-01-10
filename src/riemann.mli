@@ -65,6 +65,7 @@ type riemann_state =
   | State_ttl of float
 
 (* internal function *)
+
 val new_riemann_state : unit -> Riemann_piqi.State.t
 
 val new_riemann_event : unit -> Riemann_piqi.Event.t
@@ -86,7 +87,6 @@ val process_state :
   riemann_state list -> Riemann_piqi.State.t -> Riemann_piqi.State.t
 
 val set_nagle : Unix.file_descr -> bool -> unit
-
 
 (* public functions - these are the ones you want to use *)
 val riemann_connect :

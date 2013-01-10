@@ -14,5 +14,17 @@ Library riemann
   BuildTools:   ocamlbuild
   FindlibName:  riemann
   BuildDepends: unix, piqi.runtime, oUnit
-  Modules:      Riemann
+  Modules:      Riemann, Riemann_piqi
   Install:      false
+
+Executable test
+  Path:         test
+  BuildTools:   ocamlbuild
+  MainIs:       test.ml
+  BuildDepends: unix, piqi.runtime, piqi.lib, oUnit, riemann
+  Install:      false
+  Build$:       flag(tests)
+
+Test main
+  Run$:    flag(tests)
+  Command: $test

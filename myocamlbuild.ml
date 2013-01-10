@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 0eeeeb97a2b1a769fd5953f5fcfc95d2) *)
+(* DO NOT EDIT (digest: 1c9ed7d45dba5f9fae5fa27d8659cbc8) *)
 module OASISGettext = struct
 (* # 21 "/Users/dparfitt/.opam/3.12.1+natdynlink-osx/build/oasis.0.3.0/src/oasis/OASISGettext.ml" *)
 
@@ -480,7 +480,7 @@ let package_default =
      MyOCamlbuildBase.lib_ocaml = [("riemann", ["src"])];
      lib_c = [];
      flags = [];
-     includes = [];
+     includes = [("test", ["src"])];
      }
   ;;
 
