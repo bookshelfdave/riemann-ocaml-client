@@ -1,4 +1,5 @@
 open Riemann
+open Riemann_piqi
 open Sys
 open Unix
 open OUnit
@@ -48,8 +49,7 @@ let test_case_event_udp _ =
 
 let suite = "Riemann" >:::
             [
-              "test_case_event" >:: (test_case_event);
-
+              "test_case_event_udp" >:: (test_case_event_udp);
             ]
 
 let _ = run_test_tt_main suite
