@@ -23,14 +23,6 @@ make install
 
 ## Documentation
 
-In the meantime, checkout the interface:
-
-- src/riemann.mli
-
-Until I write some tests (shame on me), there's some crappy code at the bottom of this file that can serve as an example:
-
-- src/riemann.ml
-
 
 ### TCP Connections
 
