@@ -36,8 +36,6 @@ type riemann_connection = {
 
 type riemann_connection_options = {
   riemann_conn_use_nagal : bool;
-  riemann_conn_so_timeout : int;
-  riemann_conn_connect_timeout : int;
 }
 
 val riemann_connection_defaults : riemann_connection_options
@@ -64,7 +62,6 @@ type riemann_state =
   | State_tags of string list
   | State_ttl of float
 
-(* internal function *)
 
 val new_riemann_state : unit -> Riemann_piqi.State.t
 
@@ -88,7 +85,6 @@ val process_state :
 
 val set_nagle : Unix.file_descr -> bool -> unit
 
-(* public functions - these are the ones you want to use *)
 val riemann_connect :
   riemann_connection_options -> string -> int -> riemann_connection
 
@@ -97,8 +93,6 @@ val riemann_connect_with_defaults : string -> int -> riemann_connection
 val riemann_disconnect : riemann_connection -> unit
 
 val send_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t -> Riemann_piqi.Msg.t
-
-(*val recv_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t*)
 
 val send_msg_udp :
   Unix.file_descr * Unix.sockaddr -> Riemann_piqi.Msg.t -> int

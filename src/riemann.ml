@@ -36,18 +36,13 @@ type riemann_connection = {
   outc : out_channel;
 }
 
-(* TODO: use options *)
 type riemann_connection_options = {
   riemann_conn_use_nagal : bool;
-  riemann_conn_so_timeout : int;
-  riemann_conn_connect_timeout : int;
 }
 
 let riemann_connection_defaults =
   {
     riemann_conn_use_nagal = false;
-    riemann_conn_so_timeout = 1000;
-    riemann_conn_connect_timeout = 1000;
   }
 
 type riemann_event =
