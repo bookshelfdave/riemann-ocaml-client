@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Riemann-ocaml-client by metadave</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/metadave/riemann-ocaml-client">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/metadave/riemann-ocaml-client/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/metadave/riemann-ocaml-client/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Riemann-ocaml-client</h1>
+          <p>A Riemann client for OCaml.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/metadave">metadave</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>riemann-ocaml-client</h1>
+
+<p>© 2013 Dave Parfitt</p>
+
+<p>riemann-ocaml-client is a <a href="http://riemann.io">Riemann</a> client for OCaml.</p>
+
+<h2>Dependencies</h2>
+
+<ul>
+<li><a href="http://projects.camlcity.org/projects/findlib.html">ocamlfind</a></li>
+<li>
+<a href="http://piqi.org/">Piqi</a> </li>
+<li>
+<a href="http://code.google.com/p/protobuf/">Protobuffs</a>
+
+<ul>
+<li>On OSX, <code>brew install protobuf</code> if you are using Homebrew</li>
+</ul>
+</li>
+<li><a href="http://ounit.forge.ocamlcore.org/">OUnit</a></li>
+</ul><h2>Building from source</h2>
+
+<pre><code>./configure
+make
+make install
+</code></pre>
+
+<h2>Documentation</h2>
+
+<h3>TCP Connections</h3>
+
+<p>The following functions allow you to communicate via TCP to Riemann:</p>
+
+<pre><code>val riemann_connect_with_defaults : string -&gt; int -&gt; riemann_connection
+
+val riemann_connect : riemann_connection_options -&gt; string -&gt; int -&gt; riemann_connection
+
+val riemann_disconnect : riemann_connection -&gt; unit
+</code></pre>
+
+<p>The first string parameter of the connect functions is the IP/hostname, and the second parameter is the port # of Riemann.</p>
+
+<h3>UDP Sockets</h3>
+
+<p>The following function allows you to open a UDP socket to Riemann. Note the tuple return type.</p>
+
+<pre><code>val riemann_udp_socket : string -&gt; int -&gt; Unix.file_descr * Unix.sockaddr
+</code></pre>
+
+<h3>Generating Events</h3>
+
+<p>Since most of the fields of the Riemann Event message are optional, you can use the <code>riemann_event</code> function to pass a list of desired parameters without manually populating the entire record. If you want more control of the Event record, you can simply instantiate a <code>Riemann_piqi.Event.t</code>. Note that ultimately, these event messages must be added to a <code>Msg</code> record to be passed to Riemann.</p>
+
+<pre><code>type riemann_event =
+    Event_time of int64
+  | Event_state of string
+  | Event_service of string
+  | Event_host of string
+  | Event_description of string
+  | Event_tags of string list
+  | Event_ttl of float
+  | Event_metric_sint64 of int64
+  | Event_metric_f of float
+  | Event_metric_d of float
+
+val riemann_event : riemann_event list -&gt; Riemann_piqi.Event.t
+</code></pre>
+
+<h3>Generating States</h3>
+
+<p>Since most of the fields of the Riemann State message are optional, you can use the <code>riemann_state</code> function to pass a list of desired parameters without manually populating the entire record. If you want more control of the State record, you can simply instantiate a <code>Riemann_piqi.State.t</code>. Note that ultimately, these event messages must be added to a <code>Msg</code> record to be passed to Riemann.</p>
+
+<pre><code>type riemann_state =
+    State_time of int64
+  | State_state of string
+  | State_service of string
+  | State_host of string
+  | State_description of string
+  | State_once of bool
+  | State_tags of string list
+  | State_ttl of float
+
+
+val riemann_state : riemann_state list -&gt; Riemann_piqi.State.t
+</code></pre>
+
+<h3>Generating Queries</h3>
+
+<p>Since the Riemann Query has only a single string parameter, the <code>riemann_query</code> returns a <code>Riemann_piqi.Msg.t</code> with the query populated instead of a <code>Riemann_piqi.Query.t</code>. Feel free to roll your own <code>Riemann_piqi.Query.t</code> if you need it.</p>
+
+<pre><code>val riemann_query : string -&gt; Riemann_piqi.Msg.t
+</code></pre>
+
+<h3>Generating Protobuffs Messages w/ Events, States and Queries</h3>
+
+<p>Once you have a list of Events, list of States, or Query, you can build a protocol buffers message using the following convenience functions:</p>
+
+<pre><code>val new_riemann_events_msg : Riemann_piqi.Riemann_piqi.event list -&gt; Riemann_piqi.Msg.t
+
+val new_riemann_states_msg : Riemann_piqi.Riemann_piqi.state list -&gt; Riemann_piqi.Msg.t
+
+val new_riemann_query_msg : string -&gt; Riemann_piqi.Msg.t
+</code></pre>
+
+<p><code>Riemann_piqi.Msg.t</code> records can then be sent to Riemann using <code>send_msg_tcp</code> or <code>send_msg_udp</code>.</p>
+
+<p><em>Note</em>: since your Query is probably already a <code>Riemann_piqi.Msg.t</code>, you probably won't find much use for <code>new_riemann_query_msg</code>.</p>
+
+<h3>Sending and Receiving Protobuffs Messages</h3>
+
+<p><code>Riemann_piqi.Msg.t</code> records can then be sent to Riemann using <code>send_msg_tcp</code> or <code>send_msg_udp</code>.</p>
+
+<pre><code>val send_msg_tcp : riemann_connection -&gt; Riemann_piqi.Msg.t -&gt; Riemann_piqi.Msg.t
+
+val send_msg_udp : Unix.file_descr * Unix.sockaddr -&gt; Riemann_piqi.Msg.t -&gt; int
+</code></pre>
+
+<h2>Examples</h2>
+
+<h4>Events</h4>
+
+<pre><code>  let udp_socket = riemann_udp_socket ip port in
+  let event =
+    riemann_event [
+      Event_host "www1";
+      Event_service "testservice";
+      Event_metric_f 2.53;
+      Event_state "critical";
+      Event_description "my description";
+      Event_tags  ["http"] ] in
+  let event_msg = new_riemann_events_msg [event] in
+  let _ = send_msg_udp udp_socket event_msg in
+    ()
+</code></pre>
+
+<h4>States</h4>
+
+<pre><code>  let udp_socket = riemann_udp_socket ip port in
+  let state =
+    riemann_state [
+      State_host "www1";
+      State_service "testservice";
+      State_state "critical";
+      State_description "my description";
+      State_tags  ["http"] ] in
+  let state_msg = new_riemann_states_msg [state] in
+  let _ = send_msg_udp udp_socket state_msg in
+    ()
+</code></pre>
+
+<h4>Queries</h4>
+
+<pre><code>let conn = riemann_connect_with_defaults ip port in
+let q = ("service = \"testservice\"") in
+let msg = new_riemann_query_msg q in
+let resp = send_msg_tcp conn msg in
+match resp.Msg.ok with
+    | Some true -&gt; (* your code here *)
+    | Some false -&gt; (* your code here *)
+    | None -&gt; (* your code here *)
+</code></pre>
+
+<p>and you'll probably want a <code>riemann_disconnect</code> in there somewhere as well.</p>
+
+<h2>Tests</h2>
+
+<p>To run the tests, you'll need to run <code>make test</code>, and then the <code>test.byte</code> executable against a running Riemann instance. To change the IP/Port that the tests connect to, you can use the following environment variables:</p>
+
+<pre><code>RIEMANN_OCAML_TEST_IP
+
+RIEMANN_OCAML_TEST_PORT
+</code></pre>
+
+<h2>TODO</h2>
+
+<ul>
+<li>LWT support if anyone asks about it</li>
+<li>OPAM module once Piqi is released in OPAM</li>
+</ul><h2>License &amp; Copyright</h2>
+
+<p>Copyright © 2013 Dave Parfitt</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
