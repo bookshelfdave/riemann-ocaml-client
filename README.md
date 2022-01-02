@@ -17,7 +17,7 @@ Super fancy docs [here](http://metadave.github.com/riemann-ocaml-client).
 
 ## Building from source
 
-```
+```bash
 ./configure
 make
 make install
@@ -52,7 +52,7 @@ The following function allows you to open a UDP socket to Riemann. Note the tupl
 
 Since most of the fields of the Riemann Event message are optional, you can use the `riemann_event` function to pass a list of desired parameters without manually populating the entire record. If you want more control of the Event record, you can simply instantiate a `Riemann_piqi.Event.t`. Note that ultimately, these event messages must be added to a `Msg` record to be passed to Riemann.
 
-```
+```ocaml
 type riemann_event =
     Event_time of int64
   | Event_state of string
@@ -73,7 +73,7 @@ val riemann_event : riemann_event list -> Riemann_piqi.Event.t
 Since most of the fields of the Riemann State message are optional, you can use the `riemann_state` function to pass a list of desired parameters without manually populating the entire record. If you want more control of the State record, you can simply instantiate a `Riemann_piqi.State.t`. Note that ultimately, these event messages must be added to a `Msg` record to be passed to Riemann.
 
 
-```
+```ocaml
 type riemann_state =
     State_time of int64
   | State_state of string
@@ -92,7 +92,7 @@ val riemann_state : riemann_state list -> Riemann_piqi.State.t
 
 Since the Riemann Query has only a single string parameter, the `riemann_query` returns a `Riemann_piqi.Msg.t` with the query populated instead of a `Riemann_piqi.Query.t`. Feel free to roll your own `Riemann_piqi.Query.t` if you need it.
 
-```
+```ocaml
 val riemann_query : string -> Riemann_piqi.Msg.t
 ```
 
@@ -124,7 +124,7 @@ Once you have a list of Events, list of States, or Query, you can build a protoc
 
 #### Events
 
-```
+```ocaml
   let udp_socket = riemann_udp_socket ip port in
   let event =
     riemann_event [
@@ -141,7 +141,7 @@ Once you have a list of Events, list of States, or Query, you can build a protoc
 
 #### States
 
-```
+```ocaml
   let udp_socket = riemann_udp_socket ip port in
   let state =
     riemann_state [
@@ -158,7 +158,7 @@ Once you have a list of Events, list of States, or Query, you can build a protoc
 #### Queries
 
 
-```
+```ocaml
 let conn = riemann_connect_with_defaults ip port in
 let q = ("service = \"testservice\"") in
 let msg = new_riemann_query_msg q in
