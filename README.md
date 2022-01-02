@@ -31,12 +31,13 @@ make install
 
 The following functions allow you to communicate via TCP to Riemann:
 
-
-	val riemann_connect_with_defaults : string -> int -> riemann_connection
+```ocaml
+val riemann_connect_with_defaults : string -> int -> riemann_connection
 		
-	val riemann_connect : riemann_connection_options -> string -> int -> riemann_connection
+val riemann_connect : riemann_connection_options -> string -> int -> riemann_connection
 
-	val riemann_disconnect : riemann_connection -> unit
+val riemann_disconnect : riemann_connection -> unit
+```
 
 The first string parameter of the connect functions is the IP/hostname, and the second parameter is the port # of Riemann.
 
@@ -45,8 +46,9 @@ The first string parameter of the connect functions is the IP/hostname, and the 
 
 The following function allows you to open a UDP socket to Riemann. Note the tuple return type.
 
-	val riemann_udp_socket : string -> int -> Unix.file_descr * Unix.sockaddr
-
+```ocaml
+val riemann_udp_socket : string -> int -> Unix.file_descr * Unix.sockaddr
+```
 
 ### Generating Events
 
@@ -100,11 +102,13 @@ val riemann_query : string -> Riemann_piqi.Msg.t
 
 Once you have a list of Events, list of States, or Query, you can build a protocol buffers message using the following convenience functions:
 
-	val new_riemann_events_msg : Riemann_piqi.Riemann_piqi.event list -> Riemann_piqi.Msg.t
+```ocaml
+val new_riemann_events_msg : Riemann_piqi.Riemann_piqi.event list -> Riemann_piqi.Msg.t
 
-	val new_riemann_states_msg : Riemann_piqi.Riemann_piqi.state list -> Riemann_piqi.Msg.t
+val new_riemann_states_msg : Riemann_piqi.Riemann_piqi.state list -> Riemann_piqi.Msg.t
 
-	val new_riemann_query_msg : string -> Riemann_piqi.Msg.t
+val new_riemann_query_msg : string -> Riemann_piqi.Msg.t
+```
 
 `Riemann_piqi.Msg.t` records can then be sent to Riemann using `send_msg_tcp` or `send_msg_udp`.
 
@@ -115,9 +119,11 @@ Once you have a list of Events, list of States, or Query, you can build a protoc
 `Riemann_piqi.Msg.t` records can then be sent to Riemann using `send_msg_tcp` or `send_msg_udp`.
 
 
-	val send_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t -> Riemann_piqi.Msg.t
+```ocaml
+val send_msg_tcp : riemann_connection -> Riemann_piqi.Msg.t -> Riemann_piqi.Msg.t
 
-	val send_msg_udp : Unix.file_descr * Unix.sockaddr -> Riemann_piqi.Msg.t -> int
+val send_msg_udp : Unix.file_descr * Unix.sockaddr -> Riemann_piqi.Msg.t -> int
+```
 
 
 ## Examples
