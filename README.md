@@ -6,7 +6,8 @@ riemann-ocaml-client
 riemann-ocaml-client is a [Riemann](http://riemann.io) client for OCaml.
 
 Super fancy docs [here](http://metadave.github.com/riemann-ocaml-client).
-##Dependencies
+
+## Dependencies
 
 * [ocamlfind](http://projects.camlcity.org/projects/findlib.html)
 * [Piqi](http://piqi.org/) 
